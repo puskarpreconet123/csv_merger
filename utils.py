@@ -12,7 +12,8 @@ PHONE_ALIASES = {
     "contact",
     "contact no",
     "contact_no",
-    "contact number"
+    "contact number",
+    "directormobilenumber"
 }
 
 def find_phone_column(columns):
@@ -31,7 +32,7 @@ def format_phone(value):
         digits = "91" + digits
 
     if len(digits) == 12 and digits.startswith("91"):
-        return int(digits)
+        return f'="{digits}"'   # Forces Excel to treat as text
 
     return None
 
