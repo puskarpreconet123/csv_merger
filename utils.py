@@ -22,20 +22,37 @@ def find_phone_column(columns):
             return col
     return None
 
+# def format_phone(value):
+#     if pd.isna(value):
+#         return None
+    
+#     digits = re.sub(r"\D", "", str(value))
+
+#     if len(digits) == 10:
+#         digits = "91" + digits
+
+#     if len(digits) == 12 and digits.startswith("91"):
+#         return f'="{digits}"'   # Forces Excel to treat as text
+
+#     return None
+
 def format_phone(value):
     if pd.isna(value):
         return None
     
+    # Strip all non-numeric characters
     digits = re.sub(r"\D", "", str(value))
 
+    # Case 1: Already 10 digits
     if len(digits) == 10:
-        digits = "91" + digits
+        return f'="{digits}"'
 
+    # Case 2: 12 digits starting with 91, strip the 91
     if len(digits) == 12 and digits.startswith("91"):
-        return f'="{digits}"'   # Forces Excel to treat as text
+        return f'="{digits[2:]}"'
 
+    # Return None if it doesn't fit the expected 10-digit patterns
     return None
-
 
 def merge_csv(files, final_columns, output_path):
     all_dataframes = []
